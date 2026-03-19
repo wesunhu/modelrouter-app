@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: modelrouter-backend
+  datasource:
+    url: jdbc:sqlite:./data/modelrouter.db
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      # TableGenerator 需要独立的 JDBC 连接生成 ID，至少需 2 个连接
+      maximum-pool-size: 2
+      connection-init-sql: |
+        PRAGMA foreign_keys=ON;
+        PRAGMA busy_timeout=30000;
+        PRAGMA journal_mode=WAL;
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.community.dialect.SQLiteDialect
+    open-in-view: false
+
+server:
+  port: 20118

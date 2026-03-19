@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: modelrouter-postgres
+    environment:
+      POSTGRES_DB: modelrouter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: modelrouter-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MIRROR: ${DOCKER_MIRROR:-}
+    container_name: modelrouter-backend
+    ports:
+      - "20118:20118"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/modelrouter
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    image: modelrouter-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        MIRROR: ${DOCKER_MIRROR:-}
+    container_name: modelrouter-frontend
+    ports:
+      - "20119:80"
+    environment:
+      BACKEND_URL: http://backend:20118
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
