@@ -5,7 +5,7 @@
 > **Readme**： [中文](README.md) | [English](README.en.md) | [日本語](README.ja.md)
 
 <p align="center">
-  <strong>智能模型路由系统</strong> · 多平台 AI API 统一管理与转发
+  <strong>模型路由系统</strong> · 多平台 AI API 统一管理与转发
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 ## 简介
 
-ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI 服务（OpenAI、阿里云、智谱、DeepSeek 等）统一接入，通过路由与 Key 管理实现智能分发与成本控制。
+ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI 服务（OpenAI、阿里云、智谱、DeepSeek 等）统一接入，通过路由与 Key 管理实现分发与成本可见。
 
 - **开箱即用**：SQLite 单机模式，无需 PostgreSQL、无需 Docker
 - **OpenAI 兼容**：提供 `/v1/chat/completions` 标准接口，对接 ChatGPT 客户端、Open WebUI 等
@@ -31,7 +31,7 @@ ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI
 
 | 功能 | 说明 |
 |------|------|
-| 智能路由 | 主模型失败时自动故障转移到备用模型 |
+| 故障转移路由 | 主模型失败时自动故障转移到备用模型 |
 | 多平台 | 支持 OpenAI、阿里云百炼、智谱、DeepSeek、OpenRouter 等 10+ 平台 |
 | API Key 管理 | 多 Key 轮询，按平台与模型分配权限 |
 | 使用统计 | Token 与费用记录、图表展示 |

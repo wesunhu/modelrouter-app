@@ -5,7 +5,7 @@
 > **Readme**: [中文](README.md) | [English](README.en.md) | [日本語](README.ja.md)
 
 <p align="center">
-  <strong>Intelligent Model Routing System</strong> · Unified management and forwarding of multi-platform AI APIs
+  <strong>Model Routing System</strong> · Unified management and forwarding of multi-platform AI APIs
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 ## Introduction
 
-ModelRouter-App is an open-source AI model routing management platform that unifies multiple AI services (OpenAI, Alibaba Cloud, Zhipu, DeepSeek, etc.) with intelligent distribution and cost control through routing and API key management.
+ModelRouter-App is an open-source AI model routing management platform that unifies multiple AI services (OpenAI, Alibaba Cloud, Zhipu, DeepSeek, etc.) with distribution and cost visibility through routing and API key management.
 
 - **Out of the box**: SQLite standalone mode, no PostgreSQL or Docker required
 - **OpenAI compatible**: Provides `/v1/chat/completions` standard interface for ChatGPT clients, Open WebUI, etc.
@@ -31,7 +31,7 @@ ModelRouter-App is an open-source AI model routing management platform that unif
 
 | Feature | Description |
 |---------|-------------|
-| Smart routing | Automatic failover to backup model when primary fails |
+| Fault-tolerant routing | Automatic failover to backup model when primary fails |
 | Multi-platform | Supports 10+ platforms: OpenAI, Alibaba Bailian, Zhipu, DeepSeek, OpenRouter, etc. |
 | API Key management | Multi-key rotation, permission assignment by platform and model |
 | Usage statistics | Token and cost tracking with charts |
