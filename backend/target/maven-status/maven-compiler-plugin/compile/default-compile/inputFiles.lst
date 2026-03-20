@@ -10,8 +10,10 @@ E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\service\ModelSe
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\client\ChatParams.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\config\WebClientConfig.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\client\ModelApiClient.java
+E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\config\StaticResourceMethodFilter.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\controller\RouteController.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\entity\Provider.java
+E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\config\DisclaimerRunner.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\config\V1AuthFilter.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\controller\TestController.java
 E:\project\modelrouter-app\backend\src\main\java\com\modelrouter\repository\ModelRepository.java

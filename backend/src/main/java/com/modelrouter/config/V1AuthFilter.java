@@ -34,7 +34,8 @@ public class V1AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        if (!req.getRequestURI().startsWith("/v1")) {
+        String uri = req.getRequestURI();
+        if (!uri.startsWith("/v1") && !uri.startsWith("/api/v1")) {
             chain.doFilter(request, response);
             return;
         }

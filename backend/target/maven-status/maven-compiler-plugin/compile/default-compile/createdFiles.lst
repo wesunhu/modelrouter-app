@@ -8,6 +8,7 @@ com\modelrouter\service\RouteService.class
 com\modelrouter\repository\ProviderRepository.class
 com\modelrouter\service\ProviderService.class
 com\modelrouter\controller\OpenAIController.class
+com\modelrouter\config\DisclaimerRunner.class
 com\modelrouter\service\ModelService.class
 com\modelrouter\controller\UsageLogController.class
 com\modelrouter\config\GlobalExceptionHandler.class
@@ -26,6 +27,7 @@ com\modelrouter\entity\ApiKey.class
 com\modelrouter\controller\RouteController.class
 com\modelrouter\config\SpaWebConfig$1.class
 com\modelrouter\controller\ProviderController.class
+com\modelrouter\config\StaticResourceMethodFilter.class
 com\modelrouter\repository\ApiKeyRepository.class
 com\modelrouter\config\ProviderDataLoader.class
 com\modelrouter\repository\UsageLogRepository.class

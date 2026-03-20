@@ -16,10 +16,11 @@ import java.util.stream.Collectors;
 
 /**
  * OpenAI 兼容 API：/v1/chat/completions, /v1/models
+ * 同时支持 /api/v1/* 路径（部分客户端 base URL 为 /api 时使用）
  * 参考 https://docs.ollama.com/api/openai-compatibility
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping({"/v1", "/api/v1"})
 public class OpenAIController {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -30,7 +31,7 @@ public class OpenAIController {
     @Autowired
     private com.modelrouter.service.RouteService routeService;
 
-    @PostMapping("/chat/completions")
+    @PostMapping(value = {"/chat/completions", "/chat/completions/"})
     public ResponseEntity<?> chatCompletions(
             @RequestBody Map<String, Object> body,
             @RequestHeader(value = "Authorization", required = false) String authorization) {

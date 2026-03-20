@@ -12,7 +12,8 @@
   <a href="#features">Features</a> ·
   <a href="#installation">Installation</a> ·
   <a href="#usage">Usage</a> ·
-  <a href="#api">API</a>
+  <a href="#api">API</a> ·
+  <a href="docs/OPENCLAW.md">OpenClaw Setup</a>
 </p>
 
 ---

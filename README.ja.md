@@ -12,7 +12,8 @@
   <a href="#機能">機能</a> ·
   <a href="#インストール">インストール</a> ·
   <a href="#使い方">使い方</a> ·
-  <a href="#api">API</a>
+  <a href="#api">API</a> ·
+  <a href="docs/OPENCLAW.md">OpenClaw 設定</a>
 </p>
 
 ---
