@@ -335,7 +335,6 @@ python database/import_register_url_sqlite.py
 
 ## 许可证
 
-<<<<<<< Updated upstream
 本项目采用Apache-2.0 license 许可证。
 =======
 本项目采用 [Apache License 2.0](LICENSE) 许可证。
@@ -380,4 +379,4 @@ python database/import_register_url_sqlite.py
 |------|------|------|
 | tkinter | GUI | Python 标准库（PSF License） |
 | PyInstaller | 打包 EXE（可选） | GPL-2.0 / 商业双许可 |
->>>>>>> Stashed changes
+
