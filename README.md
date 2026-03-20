@@ -331,4 +331,4 @@ python database/import_register_url_sqlite.py
 
 ## 许可证
 
-本项目采用 MIT 许可证。
+本项目采用Apache-2.0 license 许可证。
