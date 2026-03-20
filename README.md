@@ -26,6 +26,12 @@ ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI
 - **开箱即用**：SQLite 单机模式，无需 PostgreSQL、无需 Docker
 - **OpenAI 兼容**：提供 `/v1/chat/completions` 标准接口，对接 ChatGPT 客户端、Open WebUI 等
 - **跨平台**：支持 Windows、macOS、Linux
+<img width="400" height="345" alt="340a0e6ec6d340a2157f64fd844647fe" src="https://github.com/user-attachments/assets/f6a6b6f7-05bb-47fe-90cd-04431c17c6b7" />
+<img width="400" height="500" alt="689c5ab5e6905cdcad098ded674da7bb" src="https://github.com/user-attachments/assets/cb905cbf-4dfc-40ec-9787-5e6b24a79ff9" />
+<img width="400" height="500" alt="b0fe8abb05a79d222febb3c1288e59a9" src="https://github.com/user-attachments/assets/3709ed35-305b-4e69-8441-9b0469f59400" />
+<img width="400" height="500" alt="c8e5f47bc0c4496898840de7733b8032" src="https://github.com/user-attachments/assets/649435a8-23ad-4bec-9bfe-f4101343b799" />
+<img width="400" height="500" alt="c4865938e2356a22923f96248739bc18" src="https://github.com/user-attachments/assets/b620933f-5c35-46ba-9a30-d980c16030c3" />
+<img width="400" height="500" alt="b741596575e6d6fcdcee924603601a9a" src="https://github.com/user-attachments/assets/0d75d397-5bdc-48f0-b0c9-6211268252d0" />
 
 ---
 
