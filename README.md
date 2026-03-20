@@ -13,7 +13,8 @@
   <a href="#安装运行">安装</a> ·
   <a href="#使用指南">使用</a> ·
   <a href="#api-接口">API</a> ·
-  <a href="docs/OPENCLAW.md">OpenClaw 配置</a>
+  <a href="docs/OPENCLAW.md">OpenClaw 配置</a> ·
+  <a href="RELEASE_NOTES.md">Release Notes</a>
 </p>
 
 ---
