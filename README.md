@@ -1,5 +1,9 @@
 # ModelRouter-App
 
+> **警告**：本软件为实验性项目，严禁暴露于公网。无任何担保，使用风险与后果完全由用户自行承担。详见 [LEGAL.md](LEGAL.md)（[EN](LEGAL.en.md) | [JA](LEGAL.ja.md)）。
+>
+> **Readme**： [中文](README.md) | [English](README.en.md) | [日本語](README.ja.md)
+
 <p align="center">
   <strong>智能模型路由系统</strong> · 多平台 AI API 统一管理与转发
 </p>
@@ -331,4 +335,49 @@ python database/import_register_url_sqlite.py
 
 ## 许可证
 
+<<<<<<< Updated upstream
 本项目采用Apache-2.0 license 许可证。
+=======
+本项目采用 [Apache License 2.0](LICENSE) 许可证。
+
+---
+
+## 第三方组件授权
+
+以下为本项目直接依赖的第三方组件及其授权信息。完整传递依赖可通过 `mvn dependency:tree`（后端）与 `npx license-checker`（前端）审计。
+
+### 后端 (Java / Maven)
+
+| 组件 | 版本 | 授权 |
+|------|------|------|
+| Spring Boot | 3.2.x | Apache-2.0 |
+| Spring Data JPA | - | Apache-2.0 |
+| SQLite JDBC (org.xerial) | - | Apache-2.0 |
+| Hibernate Community Dialects | - | LGPL-2.1-or-later |
+| PostgreSQL JDBC | - | BSD-2-Clause |
+| Jackson (com.fasterxml.jackson) | - | Apache-2.0 |
+| Apache HttpClient 5 | - | Apache-2.0 |
+| Spring WebFlux | - | Apache-2.0 |
+| Caffeine | - | Apache-2.0 |
+
+### 前端 (Node.js / npm)
+
+| 组件 | 授权 |
+|------|------|
+| React / react-dom | MIT |
+| react-router-dom | MIT |
+| @mui/material, @mui/icons-material | MIT |
+| @emotion/react, @emotion/styled | MIT |
+| axios | MIT |
+| chart.js, react-chartjs-2 | MIT |
+| i18next, react-i18next | MIT |
+| TypeScript | Apache-2.0 |
+| Vite, @vitejs/plugin-react | MIT |
+
+### Launcher (Python)
+
+| 组件 | 用途 | 授权 |
+|------|------|------|
+| tkinter | GUI | Python 标准库（PSF License） |
+| PyInstaller | 打包 EXE（可选） | GPL-2.0 / 商业双许可 |
+>>>>>>> Stashed changes

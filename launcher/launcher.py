@@ -205,6 +205,7 @@ def main():
         if proc[0] is not None:
             append_log("服务已在运行中")
             return
+        append_log("[警告] 实验性软件，严禁公网访问。使用风险自负。")
         append_log("正在启动 ModelRouter (SQLite 模式)...")
         root.update()
         proc[0] = start_backend(app_dir, jar_path, append_log)

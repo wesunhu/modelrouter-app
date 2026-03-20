@@ -94,6 +94,27 @@
                             <skip>${skipFrontendCopy}</skip>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-legal</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/..</directory>
+                                    <includes>
+                                        <include>LEGAL.md</include>
+                                        <include>LEGAL.en.md</include>
+                                        <include>LEGAL.ja.md</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
