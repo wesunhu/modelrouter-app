@@ -17,6 +17,7 @@ cd frontend
 npm install
 npm run build
 cd ..
+cp -f LEGAL.md LEGAL.en.md LEGAL.ja.md frontend/dist/ 2>/dev/null || true
 
 # 2. 构建后端
 echo "[2/3] Building backend..."
@@ -43,6 +44,6 @@ echo "========================================"
 echo " Build Complete"
 echo "========================================"
 echo ""
-echo "Run: java -jar modelrouter.jar"
-echo "Or:  python launcher/launcher.py"
+echo "Run: ./start.sh"
+echo "Or:  java -jar modelrouter.jar (backend only)"
 echo ""

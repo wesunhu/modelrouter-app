@@ -11,6 +11,7 @@ echo.
 REM Step 1: Build frontend
 echo [1/3] Building frontend...
 cd frontend
+set VITE_API_URL=http://localhost:20118
 call npm install
 if errorlevel 1 (
     echo ERROR: npm install failed
@@ -26,6 +27,7 @@ if errorlevel 1 (
     exit /b 1
 )
 cd ..
+copy /Y LEGAL.md LEGAL.en.md LEGAL.ja.md frontend\dist\ 2>nul
 
 REM Step 2: Build backend (prefer mvn if in PATH, else use mvnw wrapper)
 echo [2/3] Building backend...
@@ -65,7 +67,7 @@ echo ========================================
 echo  Build Complete
 echo ========================================
 echo.
-echo Run: java -jar modelrouter.jar
-echo Or:  python launcher\launcher.py
+echo Run: start.bat
+echo Or:  java -jar modelrouter.jar (backend only)
 echo.
 pause
