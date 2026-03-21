@@ -9,7 +9,9 @@
 | 环境 | 要求 |
 |------|------|
 | **操作系统** | Windows 10/11、macOS 10.15+、主流 Linux 发行版 |
-| **JDK** | JDK 17 及以上（**运行必需**） |
+| **JDK** | JDK 17 及以上（**运行后端与 GUI 启动器必需**） |
+| **Node.js** | 18+（**构建前端**及使用 `start.bat` / `start.sh` 时必需；仅用 **GUI 启动器**且已具备 `frontend/dist` 时运行期可不装） |
+| **Maven** | 3.6+（可选；可用 `backend/mvnw` 代替系统 Maven） |
 | **内存** | 建议 512MB 可用内存 |
 | **磁盘** | 约 100MB（含数据目录） |
 
@@ -96,19 +98,21 @@ java -version
 
 2. **目录结构**  
    解压后应包含：
-   - `ModelRouterLauncher.exe`（启动器）
+   - `start.bat`（启动脚本）
    - `modelrouter.jar`（后端程序）
+   - `frontend/dist`（前端构建产物）
    - `data`（数据目录，首次运行自动初始化）
    - `使用说明.txt`
 
 3. **启动**  
-   双击 `ModelRouterLauncher.exe`。  
-   - 首次启动约 5 秒后会自动打开浏览器  
-   - 管理界面地址：http://localhost:20118  
-   - 启动器窗口会显示运行日志，可保留或最小化
+   双击 `start.bat`（需已安装 Node.js 和 JDK 17+）。  
+   - 将打开两个窗口：前端(20119)、后端(20118)  
+   - **Web 管理界面**：http://localhost:20119  
+
+   若使用 **`modelrouter-launcher.jar`**（GUI 启动器），一般只需 JDK 17+，无需 Node；解压包内需含 `modelrouter-launcher.jar` 与构建好的 `frontend/dist`（详见主仓库 [README.md](README.md)）。
 
 4. **停止**  
-   在启动器窗口点击「停止服务」，或直接关闭窗口（会提示是否停止服务）。
+   关闭前端/后端窗口即可。
 
 ### 3.2 方式二：从源码构建并运行
 
@@ -122,18 +126,10 @@ java -version
    ```
    脚本会完成前端构建、后端打包，并生成 `modelrouter.jar`。
 
-2. **构建启动器（可选）**
-   ```cmd
-   cd launcher
-   pip install pyinstaller
-   pyinstaller --onefile --windowed --name ModelRouterLauncher launcher.py
-   ```
-   将 `dist\ModelRouterLauncher.exe` 复制到项目根目录。
-
-3. **运行**
-   - 推荐：双击 `ModelRouterLauncher.exe`
-   - 或：`python launcher\launcher.py`
-   - 或：`java -jar modelrouter.jar`
+2. **运行**
+   - 推荐：双击 `start.bat`（默认前端 20119，后端 20118；可传参：`start.bat 20119 20118`）
+   - 或：`java -jar modelrouter.jar`（仅后端；此时需另启前端或使用内嵌静态页策略，见主 README）
+   - 可选：`java -jar modelrouter-launcher.jar`（GUI 启动器，需先 `build-launcher.bat` 构建）
 
 ### 3.3 方式三：仅运行 jar
 
@@ -157,10 +153,11 @@ java -jar modelrouter.jar
 java -jar modelrouter.jar
 ```
 
-或使用 Python 启动器：
+或使用启动脚本：
 
 ```bash
-python3 launcher/launcher.py
+chmod +x start.sh
+./start.sh
 ```
 
 ### 4.2 从源码构建
@@ -222,8 +219,9 @@ nohup java -jar modelrouter.jar > modelrouter.log 2>&1 &
 
 ## 六、首次配置
 
-1. **打开管理界面**  
-   浏览器访问 http://localhost:20118  
+1. **打开 Web 管理界面**  
+   在已启动**前端**的前提下，浏览器访问 **http://localhost:20119**（与 `start.bat` / GUI 启动器默认一致）。首次使用按页面提示 **创建管理员账号**。  
+   若仅运行 `java -jar modelrouter.jar` 且未启动前端，请先按主文档启动静态前端或 GUI 启动器，否则无法使用完整管理 UI。
 
 2. **添加平台**  
    在「平台管理」中添加 Provider（如 OpenAI、阿里云百炼、智谱等）。
@@ -247,8 +245,8 @@ nohup java -jar modelrouter.jar > modelrouter.log 2>&1 &
 | 项目 | 说明 |
 |------|------|
 | **数据库** | SQLite，文件位于 `data/modelrouter.db` |
-| **管理端口** | 20118（http） |
-| **API 接口** | http://localhost:20118/v1/chat/completions |
+| **后端 API** | 默认 **20118**，例如 `http://localhost:20118/v1/chat/completions` |
+| **Web 管理界面** | 默认 **20119**（`start.bat` / GUI 启动器提供的前端静态页） |
 
 备份数据时，复制 `data` 目录即可。
 

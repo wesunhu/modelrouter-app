@@ -1,5 +1,50 @@
 # ModelRouter-App Release Notes
 
+## Release rhythm
+
+| Track | Artifact | Notes |
+|-------|----------|--------|
+| **Backend + Web UI** | `modelrouter-backend` **0.1.0-preview.1** (Maven), frontend **0.1.0-preview.1** (`package.json`) | Preview line; breaking changes possible before 1.0. |
+| **GUI launcher** | `modelrouter-launcher` **1.0.1** (Maven `launcher-java/`) | Independent semver; ships as `modelrouter-launcher.jar`. |
+
+Full history: [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## v1.0.1 (2026-03-21) — Launcher & documentation
+
+### Highlights
+
+| Area | What is new |
+|------|-------------|
+| **GUI launcher** | `launcher-java`: Java 17, Swing, embedded HTTP for static `frontend/dist`, start/stop backend process; UI languages zh / ja / en. |
+| **Build & run** | `build-launcher.bat` / `build-launcher.sh` → `modelrouter-launcher.jar`; `launcher.bat` / `launcher.sh` to run. |
+| **Docs** | README (zh/en/ja): architecture, ports **20118** (API) / **20119** (Web UI), admin bootstrap, REST/OpenAI API summary, GUI vs `start.bat` / `start.sh`. `INSTALL.md`: Web UI URL and Node/Maven notes fixed. |
+| **Source headers** | English headers on backend Java, launcher Java, frontend `src` TS/TSX (`@version 1.0.1`, `@since 2026-03-21`, `@author wesun hu`). |
+
+### Upgrade from v0.1.0-preview.1
+
+- No database migration required for this release.
+- To use the GUI launcher: run main build (`build-windows.bat` / `build-unix.sh`), then `build-launcher.bat` or `./build-launcher.sh`, then `launcher.bat` or `./launcher.sh`.
+
+### Download & run (unchanged defaults)
+
+```bash
+./build-unix.sh          # macOS / Linux
+./build-windows.bat      # Windows
+
+./start.sh               # or start.bat — needs Node for static server
+java -jar modelrouter.jar   # backend only
+
+# Optional GUI launcher (after build-launcher)
+./build-launcher.sh && ./launcher.sh
+```
+
+- **Web UI:** http://localhost:20119  
+- **API:** http://localhost:20118  
+
+---
+
 ## v0.1.0-preview.1 (2026-03-20)
 
 ### 概述
@@ -65,12 +110,13 @@ ModelRouter-App 0.1.0-preview.1 为首个预览版本，提供 AI 模型路由�
 ./build-unix.sh       # macOS / Linux
 
 # 运行
+./start.sh          # Linux/macOS（默认前端 20119，后端 20118）
+start.bat           # Windows
+# 或仅后端
 java -jar modelrouter.jar
-# 或
-python launcher/launcher.py
 ```
 
-访问管理界面：**http://localhost:20118**
+访问管理界面：**http://localhost:20119**
 
 ---
 

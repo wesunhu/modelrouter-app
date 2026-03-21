@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-快捷导入 register_url 迁移到 SQLite 数据库
-用法: python import_register_url_sqlite.py
-      或双击此文件（需在 database 目录或项目根目录运行）
+Applies register_url migration to the SQLite ModelRouter database.
+
+Input: SQL file ``migrate_add_register_url_sqlite.sql``; discovers ``data/modelrouter.db``.
+Output: executes DDL/DML; prints status to stdout.
+
+version: 1.0.1
+since: 2026-03-21
+author: wesun hu
+
+Usage: ``python database/import_register_url_sqlite.py`` (from project root), or run from ``database/``.
 """
 import os
 import sqlite3
@@ -55,7 +62,7 @@ def main():
             ("OpenAI", "https://api.openai.com/v1", "openai", "https://platform.openai.com/"),
             ("阿里云百炼", "https://dashscope.aliyuncs.com/compatible-mode/v1", "openai", "https://bailian.console.aliyun.com"),
             ("七牛云AI", "https://ai.qiniuapi.com/v1", "openai", "https://ai.qiniu.com/free"),
-            ("硅基流动 (SiliconFlow)", "https://api.siliconflow.cn/v1", "openai", "https://cloud.siliconflow.cn/i/6N2Q2X2L"),
+            ("硅基流动 (SiliconFlow)", "https://api.siliconflow.cn/v1", "openai", "https://cloud.siliconflow.cn/i/R4OZl1HU"),
             ("智谱AI (GLM)", "https://open.bigmodel.cn/api/paas/v4", "glm", "https://open.bigmodel.cn/"),
             ("百度智能云千帆", "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/", "baidu", "https://console.bce.baidu.com/qianfan/"),
             ("腾讯云混元", "https://hunyuan.tencentcloudapi.com", "tencent", "https://cloud.tencent.com/product/hunyuan"),

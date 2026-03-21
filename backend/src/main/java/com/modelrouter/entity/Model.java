@@ -1,10 +1,20 @@
+/**
+ * JPA entity: model catalog entry linked to a provider.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "models")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "models_gen")

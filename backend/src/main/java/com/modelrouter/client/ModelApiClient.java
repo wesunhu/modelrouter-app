@@ -1,3 +1,11 @@
+/**
+ * HTTP client to upstream providers; input: chat params; output: provider response body.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -69,7 +77,7 @@ public class ModelApiClient {
         String platformKey = provider.getApiKey();
         if ((platformKey == null || platformKey.isBlank()) &&
                 ("openai".equals(platform) || "openai_compatible".equals(platform) || "anthropic".equals(platform) || "google".equals(platform))) {
-            throw new RuntimeException("该平台未配置 API Key，请在「平台管理」中为该 Provider 设置 API Key");
+            throw new RuntimeException("Provider has no API Key. Set it in Providers.");
         }
         String token = (platformKey != null && !platformKey.isBlank()) ? platformKey : "";
 

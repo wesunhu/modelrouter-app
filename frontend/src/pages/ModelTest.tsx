@@ -1,9 +1,22 @@
+/**
+ * Interactive chat test against configured routes.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { api, type Route } from '../api/client'
 import { Box, Paper, Typography } from '@mui/material'
 
-const API_BASE = import.meta.env?.VITE_API_URL || ''
+/** /api/test/chat 成功或错误时的 JSON 形状（宽松） */
+interface ChatTestResponse {
+  choices?: { message?: { content?: string } }[]
+  error?: unknown
+  router_log?: Record<string, unknown>[]
+}
 
 /** Router 行为日志条目 */
 interface RouterLogEntry {
@@ -20,7 +33,7 @@ export default function ModelTest() {
   const { t } = useTranslation()
   const [routes, setRoutes] = useState<Route[]>([])
   const [routeId, setRouteId] = useState<number>(0)
-  const [prompt, setPrompt] = useState('你好')
+  const [prompt, setPrompt] = useState('Hello')
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -63,28 +76,29 @@ export default function ModelTest() {
     setResult('')
     setLoading(true)
     const routeName = routes.find(r => r.id === routeId)?.name || ''
-    const url = API_BASE ? `${API_BASE}/api/test/chat` : '/api/test/chat'
-    const body = JSON.stringify({
-      routeId,
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 256,
-    })
+    // 使用 api 默认 baseURL（与 /api/routes 一致）：直连后端或 VITE_API_URL=PROXY 时走 Vite 代理，勿用 baseURL:'' 误拿 SPA 的 index.html
     try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body,
+      const res = await api.post('/api/test/chat', {
+        routeId,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 256,
       })
-      const data = await res.json()
-      const routerLog = (data.router_log || []) as Record<string, unknown>[]
+      const raw = res.data
+      if (typeof raw === 'string' && (raw.includes('<!DOCTYPE') || raw.includes('<html'))) {
+        setError(t('test.errHtmlResponse'))
+        return
+      }
+      const data = raw as ChatTestResponse
+      const routerLog = data.router_log ?? []
       addLog({
         type: 'chat',
         payload: { routeName, routerLog },
       })
-      if (data.choices?.[0]?.message?.content) {
-        setResult(data.choices[0].message.content)
-      } else if (data.error) {
-        setError(data.error)
+      const content = data.choices?.[0]?.message?.content
+      if (typeof content === 'string' && content.length > 0) {
+        setResult(content)
+      } else if (data.error != null) {
+        setError(typeof data.error === 'string' ? data.error : JSON.stringify(data.error))
       } else {
         setError(JSON.stringify(data))
       }

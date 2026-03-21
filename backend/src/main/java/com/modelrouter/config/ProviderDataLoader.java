@@ -1,3 +1,11 @@
+/**
+ * Loads or seeds provider data on startup.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import com.modelrouter.entity.Provider;
@@ -24,16 +32,16 @@ public class ProviderDataLoader implements ApplicationRunner {
 
     private static final List<ProviderSeed> SEEDS = List.of(
             new ProviderSeed("OpenAI", "https://api.openai.com/v1", "openai", "https://platform.openai.com/"),
-            new ProviderSeed("阿里云百炼", "https://dashscope.aliyuncs.com/compatible-mode/v1", "openai", "https://bailian.console.aliyun.com"),
-            new ProviderSeed("七牛云AI", "https://ai.qiniuapi.com/v1", "openai", "https://ai.qiniu.com/free"),
-            new ProviderSeed("硅基流动 (SiliconFlow)", "https://api.siliconflow.cn/v1", "openai", "https://cloud.siliconflow.cn/i/6N2Q2X2L"),
-            new ProviderSeed("智谱AI (GLM)", "https://open.bigmodel.cn/api/paas/v4", "glm", "https://open.bigmodel.cn/"),
-            new ProviderSeed("百度智能云千帆", "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/", "baidu", "https://console.bce.baidu.com/qianfan/"),
-            new ProviderSeed("腾讯云混元", "https://hunyuan.tencentcloudapi.com", "tencent", "https://cloud.tencent.com/product/hunyuan"),
-            new ProviderSeed("讯飞星火", "https://spark-api.xf-yun.com/v1.1/chat", "spark", "https://xinghuo.xfyun.cn/"),
-            new ProviderSeed("DeepSeek 官方", "https://api.deepseek.com/v1", "openai", "https://platform.deepseek.com/"),
-            new ProviderSeed("火山引擎方舟", "https://ark.cn-beijing.volces.com/api/v3", "volcengine", "https://ark.cn-beijing.volces.com/"),
-            new ProviderSeed("无问芯穹", "https://api.inspire.ai/v1", "openai", "https://platform.inspire.ai/"),
+            new ProviderSeed("Alibaba Bailian", "https://dashscope.aliyuncs.com/compatible-mode/v1", "openai", "https://bailian.console.aliyun.com"),
+            new ProviderSeed("Qiniu AI", "https://ai.qiniuapi.com/v1", "openai", "https://ai.qiniu.com/free"),
+            new ProviderSeed("SiliconFlow", "https://api.siliconflow.cn/v1", "openai", "https://cloud.siliconflow.cn/i/6N2Q2X2L"),
+            new ProviderSeed("Zhipu AI (GLM)", "https://open.bigmodel.cn/api/paas/v4", "glm", "https://open.bigmodel.cn/"),
+            new ProviderSeed("Baidu Qianfan", "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/", "baidu", "https://console.bce.baidu.com/qianfan/"),
+            new ProviderSeed("Tencent Hunyuan", "https://hunyuan.tencentcloudapi.com", "tencent", "https://cloud.tencent.com/product/hunyuan"),
+            new ProviderSeed("iFlytek Spark", "https://spark-api.xf-yun.com/v1.1/chat", "spark", "https://xinghuo.xfyun.cn/"),
+            new ProviderSeed("DeepSeek", "https://api.deepseek.com/v1", "openai", "https://platform.deepseek.com/"),
+            new ProviderSeed("Volcengine Ark", "https://ark.cn-beijing.volces.com/api/v3", "volcengine", "https://ark.cn-beijing.volces.com/"),
+            new ProviderSeed("Inspire AI", "https://api.inspire.ai/v1", "openai", "https://platform.inspire.ai/"),
             new ProviderSeed("Google AI Studio (Gemini)", "https://generativelanguage.googleapis.com/v1beta", "google", "https://aistudio.google.com/"),
             new ProviderSeed("OpenRouter", "https://openrouter.ai/api/v1", "openai", "https://openrouter.ai/")
     );
@@ -47,10 +55,10 @@ public class ProviderDataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (providerRepository.count() > 0) {
-            log.debug("providers 表已有数据，跳过初始化");
+            log.debug("providers table has data, skipping init");
             return;
         }
-        log.info("初始化平台列表数据...");
+        log.info("Initializing provider list...");
         for (ProviderSeed s : SEEDS) {
             if (providerRepository.findByName(s.name).isEmpty()) {
                 Provider p = new Provider();
@@ -62,7 +70,7 @@ public class ProviderDataLoader implements ApplicationRunner {
                 providerRepository.save(p);
             }
         }
-        log.info("平台列表初始化完成");
+        log.info("Provider list initialized");
     }
 
     private record ProviderSeed(String name, String baseUrl, String apiType, String registerUrl) {}

@@ -1,3 +1,11 @@
+/**
+ * Validates Bearer route API key for /v1 and /api/v1 requests.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,13 +51,13 @@ public class V1AuthFilter implements Filter {
         try {
             String authorization = req.getHeader("Authorization");
             if (authorization == null || authorization.isBlank()) {
-                writeError(resp, 401, "1001", "Header中未收到Authorization参数，无法进行身份验证。");
+                writeError(resp, 401, "1001", "Authorization header required");
                 return;
             }
 
             String token = authorization.startsWith("Bearer ") ? authorization.substring(7).trim() : authorization.trim();
             if (token.isEmpty()) {
-                writeError(resp, 401, "1001", "Header中未收到Authorization参数，无法进行身份验证。");
+                writeError(resp, 401, "1001", "Authorization header required");
                 return;
             }
 

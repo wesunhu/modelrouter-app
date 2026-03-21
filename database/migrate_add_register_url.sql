@@ -6,7 +6,7 @@ INSERT INTO providers (name, base_url, api_type, register_url) VALUES
   ('OpenAI', 'https://api.openai.com/v1', 'openai', 'https://platform.openai.com/'),
   ('阿里云百炼', 'https://dashscope.aliyuncs.com/compatible-mode/v1', 'openai', 'https://bailian.console.aliyun.com'),
   ('七牛云AI', 'https://ai.qiniuapi.com/v1', 'openai', 'https://ai.qiniu.com/free'),
-  ('硅基流动 (SiliconFlow)', 'https://api.siliconflow.cn/v1', 'openai', 'https://cloud.siliconflow.cn/i/6N2Q2X2L'),
+  ('硅基流动 (SiliconFlow)', 'https://api.siliconflow.cn/v1', 'openai', 'https://cloud.siliconflow.cn/i/R4OZl1HU'),
   ('智谱AI (GLM)', 'https://open.bigmodel.cn/api/paas/v4', 'glm', 'https://open.bigmodel.cn/'),
   ('百度智能云千帆', 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/', 'baidu', 'https://console.bce.baidu.com/qianfan/'),
   ('腾讯云混元', 'https://hunyuan.tencentcloudapi.com', 'tencent', 'https://cloud.tencent.com/product/hunyuan'),

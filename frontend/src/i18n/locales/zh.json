@@ -1,4 +1,16 @@
 {
+  "auth": {
+    "loginTitle": "管理员登录",
+    "initTitle": "创建管理员",
+    "initHint": "首次使用请创建管理员账号，密码将加密存储",
+    "username": "用户名",
+    "password": "密码",
+    "passwordHint": "至少 6 位",
+    "login": "登录",
+    "createAdmin": "创建管理员",
+    "logout": "退出",
+    "submitting": "提交中..."
+  },
   "nav": {
     "dashboard": "仪表盘",
     "providers": "平台管理",
@@ -127,6 +139,7 @@
     "logSucceeded": "✓ {{model}} 成功",
     "logFailed": "✗ {{model}} 失败: {{error}}",
     "logNoModels": "无可用模型配置",
-    "logAllFailed": "全部模型失败"
+    "logAllFailed": "全部模型失败",
+    "errHtmlResponse": "收到网页而非接口数据（未命中 /api 代理或后端未启动）。请确认后端在 20118 运行，或设置 VITE_API_URL=http://localhost:20118 后重新构建前端。"
   }
 }

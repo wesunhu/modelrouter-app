@@ -1,4 +1,16 @@
 {
+  "auth": {
+    "loginTitle": "Admin Login",
+    "initTitle": "Create Admin",
+    "initHint": "First-time setup: create an admin account. Password will be stored encrypted.",
+    "username": "Username",
+    "password": "Password",
+    "passwordHint": "At least 6 characters",
+    "login": "Login",
+    "createAdmin": "Create Admin",
+    "logout": "Logout",
+    "submitting": "Submitting..."
+  },
   "nav": {
     "dashboard": "Dashboard",
     "providers": "Platforms",
@@ -127,6 +139,7 @@
     "logSucceeded": "✓ {{model}} succeeded",
     "logFailed": "✗ {{model}} failed: {{error}}",
     "logNoModels": "No models configured",
-    "logAllFailed": "All models failed"
+    "logAllFailed": "All models failed",
+    "errHtmlResponse": "Got a web page instead of JSON (/api not proxied or backend down). Ensure backend on :20118 or set VITE_API_URL=http://localhost:20118 and rebuild."
   }
 }

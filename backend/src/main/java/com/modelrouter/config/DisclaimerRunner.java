@@ -1,3 +1,11 @@
+/**
+ * Prints legal disclaimer to console at startup.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import org.slf4j.Logger;
@@ -18,8 +26,8 @@ public class DisclaimerRunner implements ApplicationRunner {
 
     private static final String DISCLAIMER = """
             ================================================================================
-            [警告] 实验性软件，严禁公网访问。使用风险自负。
-            ModelRouter-App 为个人实验项目，无任何担保。详见 LEGAL.md
+            [WARN] Experimental software. Do NOT expose to public internet. Use at your own risk.
+            ModelRouter-App is a personal experiment with no warranty. See LEGAL.md
             ================================================================================
             """;
 

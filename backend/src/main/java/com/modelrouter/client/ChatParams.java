@@ -1,3 +1,11 @@
+/**
+ * DTO for chat completion parameters parsed from OpenAI-style requests.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.client;
 
 import java.util.Map;

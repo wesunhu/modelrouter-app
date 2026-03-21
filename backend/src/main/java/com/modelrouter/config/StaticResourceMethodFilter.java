@@ -1,3 +1,11 @@
+/**
+ * Returns 405 for disallowed HTTP methods on static resource paths.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import jakarta.servlet.*;

@@ -4,6 +4,19 @@ All notable changes to ModelRouter-App are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+**Versioning note:** The backend Maven artifact remains `0.1.0-preview.1` until a stable backend release; the **GUI launcher** (`launcher-java`) is versioned separately (e.g. `1.0.1`). Frontend `package.json` tracks the same preview line as the backend unless stated otherwise.
+
+## [1.0.1] - 2026-03-21
+
+### Added
+- **`launcher-java`**: Java 17 Swing GUI launcher with embedded static HTTP server for `frontend/dist`, subprocess management for `modelrouter.jar`, zh/ja/en UI (`ResourceBundle`).
+- **Scripts**: `build-launcher.bat`, `build-launcher.sh`, `launcher.bat`, `launcher.sh`; root artifact `modelrouter-launcher.jar` (version **1.0.1**).
+- **Documentation**: README / README.en.md / README.ja.md expanded (architecture, ports 20118/20119, admin init, full API list, GUI launcher vs `start.*`); `INSTALL.md` corrected (Web UI on **20119**).
+- **Source file headers**: English JSDoc/Javadoc-style headers (`@version 1.0.1`, `@since 2026-03-21`, `@author wesun hu`) on backend Java, launcher Java, frontend `src` TS/TSX; Python migration script and `scripts/add_source_headers.py` documented.
+
+### Changed
+- **Launcher JAR name**: Maven output `modelrouter-launcher-1.0.1.jar` (aligned with `launcher-java` **1.0.1** in `pom.xml`).
+
 ## [0.1.0-preview.1] - 2026-03-20
 
 ### 新增

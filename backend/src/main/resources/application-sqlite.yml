@@ -18,7 +18,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.community.dialect.SQLiteDialect
-    open-in-view: false
+    open-in-view: true
 
 server:
   port: 20118
+  servlet:
+    session:
+      cookie:
+        path: /
+        same-site: lax

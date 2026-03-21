@@ -1,3 +1,11 @@
+/**
+ * CRUD REST for Route entities at /api/routes; generates route API key when missing.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.controller;
 
 import com.modelrouter.entity.Route;

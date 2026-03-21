@@ -1,3 +1,11 @@
+/**
+ * Configures WebClient for outbound HTTP to upstream LLM APIs.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import io.netty.channel.ChannelOption;

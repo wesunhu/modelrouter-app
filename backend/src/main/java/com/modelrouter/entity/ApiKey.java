@@ -1,3 +1,11 @@
+/**
+ * JPA entity: stored third-party API credentials and model bindings.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.entity;
 
 import jakarta.persistence.*;

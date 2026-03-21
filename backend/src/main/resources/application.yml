@@ -15,7 +15,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
+    # false 时控制器返回 JPA 实体，Jackson 序列化可能在会话关闭后触发 LazyInitializationException → 500
+    open-in-view: true
 
 server:
   port: 20118

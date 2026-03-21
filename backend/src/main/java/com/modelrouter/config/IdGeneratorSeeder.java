@@ -1,3 +1,11 @@
+/**
+ * Database id generation seeding if needed.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import org.slf4j.Logger;
@@ -43,7 +51,7 @@ public class IdGeneratorSeeder implements ApplicationRunner {
                 syncGenerator(genKey, tableName);
             }
         } catch (Exception e) {
-            log.warn("同步 id_generator 失败（表可能尚未创建）: {}", e.getMessage());
+            log.warn("id_generator sync failed (table may not exist): {}", e.getMessage());
         }
     }
 
@@ -58,7 +66,7 @@ public class IdGeneratorSeeder implements ApplicationRunner {
                     "INSERT OR REPLACE INTO id_generator (gen_key, gen_value) VALUES (?, ?)",
                     genKey, nextVal);
         } catch (Exception e) {
-            log.debug("跳过 {} 表（可能不存在）: {}", tableName, e.getMessage());
+            log.debug("Skip table {} (may not exist): {}", tableName, e.getMessage());
         }
     }
 }

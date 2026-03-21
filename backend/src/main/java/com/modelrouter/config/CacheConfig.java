@@ -1,3 +1,11 @@
+/**
+ * Spring cache abstraction configuration.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;

@@ -1,3 +1,11 @@
+/**
+ * OpenAI-compatible REST: POST /v1/chat/completions, GET /v1/models; input: JSON body, Bearer route key.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

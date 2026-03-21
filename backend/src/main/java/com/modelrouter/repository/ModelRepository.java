@@ -1,3 +1,11 @@
+/**
+ * Spring Data JPA repository for Model.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.repository;
 
 import com.modelrouter.entity.Model;

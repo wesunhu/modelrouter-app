@@ -1,3 +1,11 @@
+/**
+ * CRUD UI for routes and route API keys.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { api, Route, Model } from '../api/client'

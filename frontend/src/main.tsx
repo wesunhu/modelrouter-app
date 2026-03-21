@@ -1,3 +1,11 @@
+/**
+ * React root: theme, i18n, router, and error boundary mount.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import './i18n'
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
@@ -19,7 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Suspense fallback={<div style={{ padding: 24, textAlign: 'center' }}>加载中...</div>}>
+        <Suspense fallback={<div style={{ padding: 24, textAlign: 'center' }}>Loading...</div>}>
           <BrowserRouter>
             <App />
           </BrowserRouter>

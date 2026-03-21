@@ -1,3 +1,11 @@
+/**
+ * Core chat routing: selects route, calls ModelApiClient, failover, usage logging.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.service;
 
 import com.modelrouter.entity.*;

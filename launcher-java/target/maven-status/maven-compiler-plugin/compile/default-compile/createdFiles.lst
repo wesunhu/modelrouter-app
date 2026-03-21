@@ -1,0 +1,7 @@
+com\modelrouter\launcher\LauncherMain.class
+com\modelrouter\launcher\PathsUtil.class
+com\modelrouter\launcher\LauncherConfig.class
+com\modelrouter\launcher\LauncherFrame$1.class
+com\modelrouter\launcher\BackendProcess.class
+com\modelrouter\launcher\LauncherFrame.class
+com\modelrouter\launcher\StaticDistServer.class

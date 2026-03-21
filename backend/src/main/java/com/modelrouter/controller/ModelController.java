@@ -1,5 +1,14 @@
+/**
+ * CRUD REST for Model entities at /api/models; input: CreateModelRequest JSON.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.controller;
 
+import com.modelrouter.dto.CreateModelRequest;
 import com.modelrouter.entity.Model;
 import com.modelrouter.entity.Provider;
 import com.modelrouter.service.ModelService;
@@ -34,11 +43,18 @@ public class ModelController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Model model) {
-        Provider provider = resolveProvider(model.getProvider());
+    public ResponseEntity<?> create(@RequestBody CreateModelRequest req) {
+        if (req.getName() == null || req.getName().isBlank()
+                || req.getModelId() == null || req.getModelId().isBlank()) {
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                    "error", "name and modelId are required"));
+        }
+        Model model = new Model();
+        applyRequest(model, req);
+        Provider provider = resolveProvider(req.getProvider());
         if (provider == null) {
             return ResponseEntity.badRequest().body(java.util.Map.of(
-                "error", "无效的平台：请选择已存在的平台，或先在「平台管理」中添加平台"
+                "error", "Invalid provider: select existing or add one in Providers"
             ));
         }
         model.setProvider(provider);
@@ -46,19 +62,11 @@ public class ModelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Model> update(@PathVariable Long id, @RequestBody Model model) {
+    public ResponseEntity<Model> update(@PathVariable Long id, @RequestBody CreateModelRequest req) {
         return modelService.findById(id)
                 .map(existing -> {
-                    existing.setName(model.getName());
-                    existing.setModelId(model.getModelId());
-                    existing.setModelType(model.getModelType());
-                    existing.setContextWindow(model.getContextWindow());
-                    existing.setMaxTokens(model.getMaxTokens());
-                    existing.setCostInput(model.getCostInput());
-                    existing.setCostOutput(model.getCostOutput());
-                    existing.setTokenCost(model.getTokenCost());
-                    existing.setStatus(model.getStatus());
-                    Provider provider = resolveProvider(model.getProvider());
+                    applyRequest(existing, req);
+                    Provider provider = resolveProvider(req.getProvider());
                     if (provider != null) {
                         existing.setProvider(provider);
                     }
@@ -67,9 +75,21 @@ public class ModelController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    private Provider resolveProvider(Provider input) {
+    private void applyRequest(Model target, CreateModelRequest req) {
+        if (req.getName() != null) target.setName(req.getName());
+        if (req.getModelId() != null) target.setModelId(req.getModelId());
+        if (req.getModelType() != null) target.setModelType(req.getModelType());
+        if (req.getContextWindow() != null) target.setContextWindow(req.getContextWindow());
+        if (req.getMaxTokens() != null) target.setMaxTokens(req.getMaxTokens());
+        if (req.getCostInput() != null) target.setCostInput(req.getCostInput());
+        if (req.getCostOutput() != null) target.setCostOutput(req.getCostOutput());
+        if (req.getTokenCost() != null) target.setTokenCost(req.getTokenCost());
+        if (req.getStatus() != null) target.setStatus(req.getStatus());
+    }
+
+    private Provider resolveProvider(CreateModelRequest.ProviderRef input) {
         if (input == null) return null;
-        if (input.getId() != null) {
+        if (input.getId() != null && input.getId() > 0) {
             var byId = providerService.findById(input.getId()).orElse(null);
             if (byId != null) return byId;
         }

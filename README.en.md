@@ -38,6 +38,29 @@ ModelRouter-App is an open-source AI model routing management platform that unif
 | API Key management | Multi-key rotation, permission assignment by platform and model |
 | Usage statistics | Token and cost tracking with charts |
 | Model testing | Built-in chat test to verify routing and keys |
+| Web admin UI | Providers / models / API keys / routes / usage / model test; admin session |
+| UI languages | Chinese, Japanese, English (i18next) |
+| GUI launcher | Optional `modelrouter-launcher.jar` (`launcher-java`, Swing + embedded static server, UI in zh/ja/en) |
+
+---
+
+## Architecture (matches the codebase)
+
+| Module | Stack | Notes |
+|--------|-------|--------|
+| `backend/` | Spring Boot 3.2.x, Java 17 | REST admin API, `/v1` OpenAI-compatible proxy; default `spring.profiles.active=sqlite`, `./data/modelrouter.db` |
+| `frontend/` | React 18, Vite 5, MUI 5 | Admin UI; `VITE_API_URL` at build time |
+| `launcher-java/` | Java 17, Swing, `HttpServer` | Optional; serves `frontend/dist`, spawns backend child process |
+| `database/` | SQL / Python helpers | Init and migration scripts |
+
+**Default ports** (override via args or config):
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| Backend HTTP | **20118** | REST, `/v1/*` chat API |
+| Frontend static (`start.*` / GUI launcher) | **20119** | Browser admin UI |
+
+**Security**: Intended for LAN/localhost only; do not expose admin or route keys to the internet. See [LEGAL.en.md](LEGAL.en.md).
 
 ---
 
@@ -45,27 +68,33 @@ ModelRouter-App is an open-source AI model routing management platform that unif
 
 ```
 modelrouter-app/
-├── backend/           # Spring Boot backend (Java 17)
-├── frontend/          # React + Vite + MUI frontend
-├── database/          # Init and migration scripts
-├── launcher/          # Windows one-click launcher
-├── build-windows.bat  # Windows build script
-├── build-unix.sh      # macOS/Linux build script
-├── modelrouter.jar   # Build output (for running)
+├── backend/              # Spring Boot backend (Java 17, see backend/pom.xml)
+├── launcher-java/        # Java GUI launcher sources (Java 17, see launcher-java/pom.xml)
+├── frontend/             # React + Vite + MUI (Node 18+, see package.json engines)
+├── database/             # Init and migration scripts
+├── start.bat / start.sh  # CLI start (static server + backend)
+├── launcher.bat / launcher.sh  # Run GUI launcher (needs modelrouter-launcher.jar)
+├── build-windows.bat / build-unix.sh   # Main build → modelrouter.jar + frontend/dist
+├── build-launcher.bat / build-launcher.sh  # Build GUI launcher → modelrouter-launcher.jar
+├── modelrouter.jar       # Backend runnable jar
+├── modelrouter-launcher.jar  # GUI launcher (optional)
 └── data/
-    └── modelrouter.db # SQLite data (generated at runtime)
+    └── modelrouter.db    # SQLite (generated at runtime)
 ```
 
 ---
 
 ## Requirements
 
+Versions should match the repo: **backend and launcher-java target Java 17** (`java.version` / `release` in `backend/pom.xml` and `launcher-java/pom.xml`). Any **JDK 17 or newer** runtime can run these artifacts.
+
 | Requirement | Purpose |
 |-------------|---------|
-| **JDK 17+** | Run backend (required) |
-| **Node.js 18+** | Build frontend (build time only) |
-| **Maven 3.6+** | Build backend (recommended, or use bundled Maven Wrapper) |
-| **Python 3.8+** | Optional, for launcher or EXE build |
+| **JDK 17+** | Run `modelrouter.jar` and build/run `modelrouter-launcher.jar` (GUI launcher) |
+| **Node.js 18+** | Build frontend (`npm install` / `npm run build`); required for `start.bat`/`start.sh` static server (matches `frontend/package.json` `engines.node`) |
+| **Maven 3.6+** | Build backend and GUI launcher (recommended; or use `backend/mvnw` / `backend/mvnw.cmd` only) |
+
+**GUI launcher**: Node is **not** required to *serve* the frontend (embedded HTTP server), but you must run the main build first to produce `frontend/dist`. **`start.bat` / `start.sh`** still need Node (`npx serve`).
 
 ---
 
@@ -104,33 +133,39 @@ The script will: install frontend deps → build frontend → build backend → 
 
 #### 4. Run
 
-**Option A: One-click launcher (recommended)**
+**Option A: Command line (recommended)**
 
 ```cmd
-# Build EXE first (one-time)
-cd launcher
-pip install pyinstaller
-pyinstaller --onefile --windowed --name ModelRouterLauncher launcher.py
-
-# Copy dist\ModelRouterLauncher.exe to project root (same level as modelrouter.jar)
-# Double-click ModelRouterLauncher.exe to start
+start.bat
+# Default frontend 20119, backend 20118; custom: start.bat 20119 20118
 ```
 
-**Option B: Python script**
-
-```cmd
-python launcher\launcher.py
-```
-
-**Option C: Run jar directly**
+**Option B: Backend only**
 
 ```cmd
 java -jar modelrouter.jar
 ```
 
+**Option C: GUI launcher (optional, no Node for frontend)**
+
+Requires **JDK 17+** (same as backend). After the main build (step 3) produces `frontend/dist` and `modelrouter.jar`, build the launcher:
+
+```cmd
+build-launcher.bat
+```
+
+Run:
+
+```cmd
+launcher.bat
+REM or: java -jar modelrouter-launcher.jar
+```
+
+On **macOS / Linux**, use `./build-launcher.sh` and `./launcher.sh` (`chmod +x` if needed).
+
 #### 5. Access
 
-Open browser: **http://localhost:20118**
+Open browser: **http://localhost:20119** (frontend) or **http://localhost:20118** (backend API)
 
 ---
 
@@ -162,18 +197,21 @@ chmod +x build-unix.sh
 #### 3. Run
 
 ```bash
+chmod +x start.sh
+./start.sh
+```
+
+Or backend only:
+
+```bash
 java -jar modelrouter.jar
 ```
 
-Or Python launcher:
-
-```bash
-python3 launcher/launcher.py
-```
+GUI launcher (optional): run `./build-unix.sh` first, then `./build-launcher.sh`, then `./launcher.sh`.
 
 #### 4. Access
 
-**http://localhost:20118**
+**http://localhost:20119** (frontend) or **http://localhost:20118** (backend API)
 
 ---
 
@@ -210,18 +248,21 @@ chmod +x build-unix.sh
 #### 3. Run
 
 ```bash
+chmod +x start.sh
+./start.sh
+```
+
+Or backend only:
+
+```bash
 java -jar modelrouter.jar
 ```
 
-Or:
-
-```bash
-python3 launcher/launcher.py
-```
+GUI launcher (optional): run `./build-unix.sh` first, then `./build-launcher.sh`, then `./launcher.sh`.
 
 #### 4. Access
 
-**http://localhost:20118**
+**http://localhost:20119** (frontend) or **http://localhost:20118** (backend API)
 
 ---
 
@@ -248,11 +289,12 @@ DOCKER_MIRROR=docker.1ms.run/library/
 
 ### Basic workflow
 
-1. **Add platform**: Configure Provider in "Platform Management" (e.g., OpenAI, Alibaba Bailian)
-2. **Add model**: Add models in "Model Management", link to platform
-3. **Add API Key**: Enter Key and Secret in "API Key", bind to models
-4. **Create route**: Set primary and backup models in "Routes"
-5. **Test**: Verify in "Model Test" chat
+1. **First visit**: Open **http://localhost:20119** in a browser (if you only run `java -jar modelrouter.jar` without a separate frontend, start the frontend as in [Installation](#installation) or use the GUI launcher). **Initialize the admin account** when prompted (`POST /api/auth/init`, then session via `/api/auth/login`).
+2. **Add platform**: Configure Provider in "Platform Management" (e.g., OpenAI, Alibaba Bailian)
+3. **Add model**: Add models in "Model Management", link to platform
+4. **Add API Key**: Enter Key and Secret in "API Key", bind to models
+5. **Create route**: Set primary and backup models in "Routes"; obtain the **route API key** for clients calling `/v1/chat/completions`
+6. **Test**: Verify in "Model Test" chat
 
 ### Data files
 
@@ -263,9 +305,12 @@ DOCKER_MIRROR=docker.1ms.run/library/
 
 ## API
 
-### OpenAI-compatible endpoint
+### OpenAI-compatible (proxy)
 
-ModelRouter provides OpenAI-compatible chat API:
+- `POST /v1/chat/completions` (equivalent: `POST /api/v1/chat/completions`)
+- `GET /v1/models`, `GET /v1/models/{modelId}` (also under `/api/v1/...`)
+
+Auth: **route API key** from the Routes UI, `Authorization: Bearer <route key>`.
 
 ```bash
 curl -X POST http://localhost:20118/v1/chat/completions \
@@ -278,13 +323,20 @@ curl -X POST http://localhost:20118/v1/chat/completions \
   }'
 ```
 
-### Management API
+### Auth (admin session)
 
-- Platforms: `GET/POST /api/providers`
-- Models: `GET/POST /api/models`
-- API Keys: `GET/POST /api/api-keys`
-- Routes: `GET/POST /api/routes`
-- Usage stats: `GET /api/usage-logs`
+- `GET /api/auth/needs-init` — whether first admin must be created  
+- `POST /api/auth/init` — create first admin (only when none exists)  
+- `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
+
+### Management REST (CRUD; see controllers for details)
+
+- Providers: `/api/providers`
+- Models: `/api/models`
+- API keys: `/api/api-keys`
+- Routes: `/api/routes`
+- Usage: `/api/usage-logs` (includes `statistics`, `route/{routeId}`, etc.)
+- Model test: `POST /api/test/chat`
 
 ---
 
@@ -308,7 +360,7 @@ Install Maven and retry: `winget install Apache.Maven` or `choco install maven`.
 
 ### Java version error (class file version 61.0 / 52.0)
 
-JDK 17 required. Check: `java -version`, ensure `JAVA_HOME` points to JDK 17.
+**JDK 17+** required (class file 61 = Java 17). Both `modelrouter.jar` and `modelrouter-launcher.jar` are built for Java 17. Check: `java -version`, ensure `JAVA_HOME` points to JDK 17 or newer.
 
 ### Maven download failed (zip END header not found)
 
@@ -373,9 +425,9 @@ Direct dependencies and their licenses. Full transitive deps can be audited with
 | TypeScript | Apache-2.0 |
 | Vite, @vitejs/plugin-react | MIT |
 
-### Launcher (Python)
+### GUI launcher (`launcher-java`)
 
-| Component | Purpose | License |
-|-----------|----------|---------|
-| tkinter | GUI | Python stdlib (PSF License) |
-| PyInstaller | EXE packaging (optional) | GPL-2.0 / Commercial dual-license |
+| Component | Notes |
+|-----------|--------|
+| JDK standard library (Swing, `HttpServer`, etc.) | Subject to your JDK distribution license |
+

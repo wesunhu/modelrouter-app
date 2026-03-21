@@ -1,3 +1,11 @@
+/**
+ * UI control to switch frontend display language.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Menu, MenuItem } from '@mui/material'

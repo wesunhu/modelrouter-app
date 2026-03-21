@@ -1,3 +1,11 @@
+/**
+ * Catches React render errors and shows fallback UI.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import { Component, ErrorInfo, ReactNode } from 'react'
 
 interface Props { children: ReactNode }
@@ -18,11 +26,11 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div style={{ padding: 24, fontFamily: 'sans-serif' }}>
-          <h2 style={{ color: '#c62828' }}>页面加载失败</h2>
+          <h2 style={{ color: '#c62828' }}>Page load failed</h2>
           <pre style={{ background: '#f5f5f5', padding: 16, overflow: 'auto' }}>
             {this.state.error?.message}
           </pre>
-          <p>请检查控制台 (F12) 获取更多信息</p>
+          <p>Check console (F12) for details</p>
         </div>
       )
     }

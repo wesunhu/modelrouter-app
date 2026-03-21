@@ -1,3 +1,11 @@
+/**
+ * Thrown when route or upstream API key is invalid.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.exception;
 
 /**

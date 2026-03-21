@@ -1,3 +1,11 @@
+/**
+ * CRUD REST for ApiKey entities at /api/api-keys.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.controller;
 
 import com.modelrouter.entity.ApiKey;

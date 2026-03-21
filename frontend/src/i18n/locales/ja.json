@@ -1,4 +1,16 @@
 {
+  "auth": {
+    "loginTitle": "管理者ログイン",
+    "initTitle": "管理者作成",
+    "initHint": "初回使用時：管理者アカウントを作成してください。パスワードは暗号化して保存されます。",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "passwordHint": "6文字以上",
+    "login": "ログイン",
+    "createAdmin": "管理者作成",
+    "logout": "ログアウト",
+    "submitting": "送信中..."
+  },
   "nav": {
     "dashboard": "ダッシュボード",
     "providers": "プラットフォーム",
@@ -125,6 +137,7 @@
     "logSucceeded": "✓ {{model}} 成功",
     "logFailed": "✗ {{model}} 失敗: {{error}}",
     "logNoModels": "利用可能なモデルがありません",
-    "logAllFailed": "全モデル失敗"
+    "logAllFailed": "全モデル失敗",
+    "errHtmlResponse": "JSON ではなく HTML が返りました（/api のプロキシ未設定またはバックエンド未起動）。バックエンド :20118 を確認するか、VITE_API_URL=http://localhost:20118 を設定して再ビルドしてください。"
   }
 }

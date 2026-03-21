@@ -1,10 +1,20 @@
+/**
+ * JPA entity: AI provider platform definition.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "providers")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Provider {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "providers_gen")

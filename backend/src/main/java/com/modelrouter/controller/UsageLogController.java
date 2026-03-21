@@ -1,3 +1,11 @@
+/**
+ * Read-only usage statistics and aggregates at /api/usage-logs.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.controller;
 
 import com.modelrouter.entity.UsageLog;
@@ -97,7 +105,7 @@ public class UsageLogController {
             totalCost += apiCost;
             routeStats.add(Map.of(
                     "routeId", (Object) null,
-                    "routeName", "API Key 直连",
+                    "routeName", "API Key Direct",
                     "totalTokens", apiTokens,
                     "cost", apiCost,
                     "sales", 0.0,

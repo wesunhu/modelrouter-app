@@ -44,6 +44,29 @@ ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI
 | API Key 管理 | 多 Key 轮询，按平台与模型分配权限 |
 | 使用统计 | Token 与费用记录、图表展示 |
 | 模型测试 | 内置对话测试，验证路由与 Key |
+| Web 管理台 | 平台/模型/API Key/路由/用量/模型测试；管理员会话 |
+| 界面语言 | 前端支持中文、日本語、English（i18next） |
+| GUI 启动器 | 可选：`modelrouter-launcher.jar`（`launcher-java`，Swing + 内嵌静态服务，界面中/日/英） |
+
+---
+
+## 架构说明（与仓库实现一致）
+
+| 模块 | 技术栈 | 说明 |
+|------|--------|------|
+| `backend/` | Spring Boot 3.2.x，Java 17 | REST 管理 API、`/v1` OpenAI 兼容转发；默认 `spring.profiles.active=sqlite`，数据 `./data/modelrouter.db` |
+| `frontend/` | React 18、Vite 5、MUI 5 | 管理 Web UI；`VITE_API_URL` 构建时指向后端 |
+| `launcher-java/` | Java 17、Swing、`HttpServer` | 可选；本地静态托管 `frontend/dist`、启动后端子进程 |
+| `database/` | SQL / Python 辅助脚本 | 初始化与迁移；详见各脚本说明 |
+
+**默认端口**（可在启动参数或配置中修改）：
+
+| 服务 | 端口 | 说明 |
+|------|------|------|
+| 后端 HTTP | **20118** | REST、`/v1/*` 聊天 API |
+| 前端静态（`start.*` / GUI 启动器） | **20119** | 浏览器管理界面 |
+
+**安全提示**：仅适用于内网或本机；管理员与路由密钥勿暴露于公网。详见 [LEGAL.md](LEGAL.md)。
 
 ---
 
@@ -51,27 +74,33 @@ ModelRouter-App 是一个开源的 AI 模型路由管理平台，可将多家 AI
 
 ```
 modelrouter-app/
-├── backend/           # Spring Boot 后端 (Java 17)
-├── frontend/          # React + Vite + MUI 前端
-├── database/          # 初始化与迁移脚本
-├── launcher/          # Windows 一键启动器
-├── build-windows.bat  # Windows 构建脚本
-├── build-unix.sh      # macOS/Linux 构建脚本
-├── modelrouter.jar    # 构建产物（运行用）
+├── backend/              # Spring Boot 后端（Java 17，见 backend/pom.xml）
+├── launcher-java/        # Java GUI 启动器源码（Java 17，见 launcher-java/pom.xml）
+├── frontend/             # React + Vite + MUI 前端（Node 18+，见 package.json engines）
+├── database/             # 初始化与迁移脚本
+├── start.bat / start.sh  # 命令行启动（前端静态服务 + 后端）
+├── launcher.bat / launcher.sh  # 运行 GUI 启动器（需先有 modelrouter-launcher.jar）
+├── build-windows.bat / build-unix.sh   # 构建主项目 → modelrouter.jar + frontend/dist
+├── build-launcher.bat / build-launcher.sh  # 构建 GUI 启动器 → modelrouter-launcher.jar
+├── modelrouter.jar       # 后端可执行包（构建产物）
+├── modelrouter-launcher.jar  # GUI 启动器（可选，由 build-launcher 生成）
 └── data/
-    └── modelrouter.db # SQLite 数据（运行时生成）
+    └── modelrouter.db    # SQLite 数据（运行时生成）
 ```
 
 ---
 
 ## 环境要求
 
+版本需与仓库配置一致：**后端与 launcher-java 均使用 Java 17**（`backend/pom.xml`、`launcher-java/pom.xml` 中 `java.version` / `release`）；运行任意 **JDK 17 或更高** 的 JRE/JDK 均可加载上述字节码。
+
 | 环境 | 用途 |
 |------|------|
-| **JDK 17+** | 运行后端（必须） |
-| **Node.js 18+** | 构建前端（仅构建时需要） |
-| **Maven 3.6+** | 构建后端（推荐安装，或使用项目自带的 Maven Wrapper） |
-| **Python 3.8+** | 可选，用于 launcher 或构建 EXE |
+| **JDK 17+** | 运行 `modelrouter.jar`、构建并运行 `modelrouter-launcher.jar`（GUI 启动器） |
+| **Node.js 18+** | 构建前端（`npm install` / `npm run build`）；使用 `start.bat`/`start.sh` 时提供静态服务（与 `frontend/package.json` 的 `engines.node` 一致） |
+| **Maven 3.6+** | 构建后端与 GUI 启动器（推荐安装；也可仅用项目内 `backend/mvnw` / `backend/mvnw.cmd`） |
+
+说明：使用 **GUI 启动器** 运行前端时**不需要**安装 Node；但仍需先执行主构建以生成 `frontend/dist`。使用 **`start.bat` / `start.sh`** 时，需 Node（通过 `npx serve` 提供静态文件）。
 
 ---
 
@@ -110,33 +139,39 @@ build-windows.bat
 
 #### 4. 运行
 
-**方式 A：一键启动器（推荐）**
+**方式 A：命令行启动（推荐）**
 
 ```cmd
-# 先构建 EXE（仅首次）
-cd launcher
-pip install pyinstaller
-pyinstaller --onefile --windowed --name ModelRouterLauncher launcher.py
-
-# 将 dist\ModelRouterLauncher.exe 复制到项目根目录（与 modelrouter.jar 同级）
-# 双击 ModelRouterLauncher.exe 即可启动
+start.bat
+# 默认前端 20119，后端 20118；指定端口：start.bat 20119 20118
 ```
 
-**方式 B：Python 脚本启动**
-
-```cmd
-python launcher\launcher.py
-```
-
-**方式 C：直接运行 jar**
+**方式 B：仅运行后端**
 
 ```cmd
 java -jar modelrouter.jar
 ```
 
+**方式 C：GUI 启动器（可选，无需 Node 跑前端）**
+
+需与后端相同 **JDK 17+**。先执行上文 **构建项目** 得到 `frontend/dist` 与 `modelrouter.jar`，再构建启动器：
+
+```cmd
+build-launcher.bat
+```
+
+运行：
+
+```cmd
+launcher.bat
+REM 或: java -jar modelrouter-launcher.jar
+```
+
+**macOS / Linux** 对应使用 `./build-launcher.sh`、 `./launcher.sh`（需 `chmod +x`）。
+
 #### 5. 访问
 
-打开浏览器访问：**http://localhost:20118**
+打开浏览器访问：**http://localhost:20119**（前端）或 **http://localhost:20118**（后端 API）
 
 ---
 
@@ -168,18 +203,22 @@ chmod +x build-unix.sh
 #### 3. 运行
 
 ```bash
+chmod +x start.sh
+./start.sh
+# 默认前端 20119，后端 20118；指定端口：./start.sh 20119 20118
+```
+
+或仅运行后端：
+
+```bash
 java -jar modelrouter.jar
 ```
 
-或使用 Python 启动器：
-
-```bash
-python3 launcher/launcher.py
-```
+GUI 启动器（可选）：先 `./build-unix.sh`，再 `./build-launcher.sh`，然后 `./launcher.sh`。
 
 #### 4. 访问
 
-**http://localhost:20118**
+**http://localhost:20119**（前端）或 **http://localhost:20118**（后端 API）
 
 ---
 
@@ -216,18 +255,21 @@ chmod +x build-unix.sh
 #### 3. 运行
 
 ```bash
+chmod +x start.sh
+./start.sh
+```
+
+或仅运行后端：
+
+```bash
 java -jar modelrouter.jar
 ```
 
-或：
-
-```bash
-python3 launcher/launcher.py
-```
+GUI 启动器（可选）：先 `./build-unix.sh`，再 `./build-launcher.sh`，然后 `./launcher.sh`。
 
 #### 4. 访问
 
-**http://localhost:20118**
+**http://localhost:20119**（前端）或 **http://localhost:20118**（后端 API）
 
 ---
 
@@ -254,11 +296,12 @@ DOCKER_MIRROR=docker.1ms.run/library/
 
 ### 基本流程
 
-1. **添加平台**：在「平台管理」中配置 Provider（如 OpenAI、阿里云百炼等）
-2. **添加模型**：在「模型管理」中添加模型，关联平台
-3. **添加 API Key**：在「API Key」中填写 Key 与 Secret，并绑定模型
-4. **创建路由**：在「路由」中设置主模型与备用模型
-5. **测试**：在「模型测试」中验证对话
+1. **首次访问 Web 控制台**：浏览器打开 **http://localhost:20119**（若仅用 `java -jar modelrouter.jar` 且未单独启动前端，请先按上文「安装运行」启动前端或改用 GUI 启动器）。按系统提示 **初始化管理员账号**（`POST /api/auth/init`、`/api/auth/login` 会话）。
+2. **添加平台**：在「平台管理」中配置 Provider（如 OpenAI、阿里云百炼等）
+3. **添加模型**：在「模型管理」中添加模型，关联平台
+4. **添加 API Key**：在「API Key」中填写 Key 与 Secret，并绑定模型
+5. **创建路由**：在「路由」中设置主模型与备用模型，获取 **路由 API Key**（供客户端调用 `/v1/chat/completions`）
+6. **测试**：在「模型测试」中验证对话
 
 ### 数据文件
 
@@ -269,9 +312,12 @@ DOCKER_MIRROR=docker.1ms.run/library/
 
 ## API 接口
 
-### OpenAI 兼容接口
+### OpenAI 兼容接口（转发/路由）
 
-ModelRouter 提供与 OpenAI 兼容的聊天接口：
+- `POST /v1/chat/completions`（及等价路径 `POST /api/v1/chat/completions`）
+- `GET /v1/models`、`GET /v1/models/{modelId}`（同上可用 `/api/v1/...`）
+
+鉴权：使用 **路由** 上生成的 Key，`Authorization: Bearer <路由 API Key>`。
 
 ```bash
 curl -X POST http://localhost:20118/v1/chat/completions \
@@ -284,13 +330,20 @@ curl -X POST http://localhost:20118/v1/chat/completions \
   }'
 ```
 
-### 管理接口
+### 认证（管理后台会话）
 
-- 平台：`GET/POST /api/providers`
-- 模型：`GET/POST /api/models`
-- API Key：`GET/POST /api/api-keys`
-- 路由：`GET/POST /api/routes`
-- 使用统计：`GET /api/usage-logs`
+- `GET /api/auth/needs-init` — 是否需要初始化首个管理员  
+- `POST /api/auth/init` — 创建首个管理员（仅当系统中尚无管理员时）  
+- `POST /api/auth/login`、`POST /api/auth/logout`、`GET /api/auth/me`
+
+### 管理 REST（CRUD，具体以控制器为准）
+
+- 平台：`/api/providers`
+- 模型：`/api/models`
+- API Key：`/api/api-keys`
+- 路由：`/api/routes`
+- 使用统计：`/api/usage-logs`（含 `statistics`、`route/{routeId}` 等子路径）
+- 模型测试：`POST /api/test/chat`
 
 ---
 
@@ -314,7 +367,7 @@ curl -X POST http://localhost:20118/v1/chat/completions \
 
 ### Java 版本错误（class file version 61.0 / 52.0）
 
-需要 JDK 17。检查：`java -version`，并确保 `JAVA_HOME` 指向 JDK 17。
+需要 **JDK 17+**（class 61 = Java 17）。`modelrouter.jar` 与 `modelrouter-launcher.jar` 均为 Java 17 编译。检查：`java -version`，并确保 `JAVA_HOME` 指向 JDK 17 或更高。
 
 ### Maven 下载失败（zip END header not found）
 
@@ -343,8 +396,6 @@ python database/import_register_url_sqlite.py
 
 ## 许可证
 
-本项目采用Apache-2.0 license 许可证。
-=======
 本项目采用 [Apache License 2.0](LICENSE) 许可证。
 
 ---
@@ -381,10 +432,10 @@ python database/import_register_url_sqlite.py
 | TypeScript | Apache-2.0 |
 | Vite, @vitejs/plugin-react | MIT |
 
-### Launcher (Python)
+### GUI 启动器（`launcher-java`）
 
-| 组件 | 用途 | 授权 |
-|------|------|------|
-| tkinter | GUI | Python 标准库（PSF License） |
-| PyInstaller | 打包 EXE（可选） | GPL-2.0 / 商业双许可 |
+| 组件 | 说明 |
+|------|------|
+| JDK 标准库（Swing、`com.sun.net.httpserver` 等） | 随 JDK 发行许可（如 Oracle/OpenJDK） |
+
 

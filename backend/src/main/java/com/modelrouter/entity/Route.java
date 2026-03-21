@@ -1,3 +1,11 @@
+/**
+ * JPA entity: routing rule with primary/fallback models and client API key.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 package com.modelrouter.entity;
 
 import jakarta.persistence.*;

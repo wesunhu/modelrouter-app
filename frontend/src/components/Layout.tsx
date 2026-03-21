@@ -1,8 +1,17 @@
+/**
+ * Application shell: navigation, disclaimer banner, outlet for pages.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import { ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AppBar, Toolbar, Button, Typography, Box, Alert } from '@mui/material'
 import LanguageSelector from './LanguageSelector'
+import { useAuth } from '../contexts/AuthContext'
 
 const nav = [
   { path: '/', key: 'nav.dashboard' },
@@ -15,11 +24,19 @@ const nav = [
 
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation()
+  const navigate = useNavigate()
   const { t } = useTranslation()
+  const { username, logout } = useAuth()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login')
+  }
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5' }}>
       <Alert severity="warning" sx={{ borderRadius: 0, '& .MuiAlert-message': { width: '100%' } }}>
-        <strong>[警告]</strong> 实验性软件，严禁公网访问。使用风险自负。详见{' '}
+        <strong>[WARN]</strong> Experimental software. Do NOT expose to public internet. Use at your own risk. See{' '}
         <a href="/LEGAL.md" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>LEGAL</a>
         {' '}(<a href="/LEGAL.en.md" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>EN</a>
         {' '}|{' '}
@@ -41,6 +58,12 @@ export default function Layout({ children }: { children: ReactNode }) {
               {t(key)}
             </Button>
           ))}
+          <Typography component="span" sx={{ mr: 2, opacity: 0.9 }}>
+            {username}
+          </Typography>
+          <Button color="inherit" onClick={handleLogout}>
+            {t('auth.logout')}
+          </Button>
           <LanguageSelector />
         </Toolbar>
       </AppBar>

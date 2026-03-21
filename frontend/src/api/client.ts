@@ -1,3 +1,11 @@
+/**
+ * Axios HTTP client with base URL and session cookie handling; input: API paths; output: JSON.
+ *
+ * @version 1.0.1
+ * @since 2026-03-21
+ * @author wesun hu
+ */
+
 import axios from 'axios'
 
 // 空或 'PROXY' 表示使用同源（由 server.js 代理）；未设置时用直连后端
@@ -7,6 +15,8 @@ const API_BASE = envUrl === '' || envUrl === 'PROXY' ? '' : (envUrl || 'http://l
 export const api = axios.create({
   baseURL: API_BASE,
   headers: { Accept: 'application/json' },
+  // 与后端 Session 登录一致；后端 CORS 使用 localhost:* 等具体 Origin 模式（非 *）
+  withCredentials: true,
 })
 
 // GET/HEAD 等无 body 请求不发送 Content-Type，避免部分后端返回 400

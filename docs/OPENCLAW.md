@@ -165,7 +165,7 @@ ModelRouter 同时支持 `/v1` 与 `/api/v1` 路径。
 ### 4. ModelRouter 未启动
 
 - **现象**：连接超时或连接被拒绝
-- **解决**：先启动 ModelRouter（`java -jar modelrouter.jar` 或使用 launcher），确认 http://localhost:20118 可访问
+- **解决**：先启动 ModelRouter（`java -jar modelrouter.jar` 或 `start.bat` / `./start.sh`），确认 http://localhost:20118 可访问
 
 ---
 
